@@ -11,6 +11,8 @@ variables:
   value: ADO_demo
 
 steps:
+- template: azdo-base-pipeline.yml
+
 - bash: |
     mkdir -p "$(Build.ArtifactStagingDirectory)/arm_template"
     cp parameters.json template.json "$(Build.ArtifactStagingDirectory)/arm_template/"
