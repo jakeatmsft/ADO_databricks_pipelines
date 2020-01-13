@@ -1,0 +1,17 @@
+{
+    "run_name": "{{ RUN_NAME }}",
+    "new_cluster": {
+        "spark_version": "5.2.x-scala2.11",
+        "node_type_id": "Standard_F4s",
+        "num_workers": 1,
+        "spark_env_vars": {
+            "PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+        },
+        "enable_elastic_disk": true
+    },
+    "libraries": [],
+    "notebook_task": {
+        "notebook_path": "{{ NOTEBOOK_PATH }}"
+    },
+    "timeout_seconds": 1800
+}

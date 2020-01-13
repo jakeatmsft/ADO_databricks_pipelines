@@ -1,0 +1,32 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+variables:
+- name: NotebookName
+  value: LoanClassifier_workbook
+- name: NotebookPath
+  value: ADO_demo
+
+steps:
+- bash: |
+    mkdir -p "$(Build.ArtifactStagingDirectory)/arm_template"
+    cp parameters.json template.json "$(Build.ArtifactStagingDirectory)/arm_template/"
+  displayName: 'Include Azure Resource Manager templates into Build Artifacts'
+- bash: |
+    mkdir -p "$(Build.ArtifactStagingDirectory)/notebook"
+    cp notebooks/$(NotebookPath)/$(NotebookName).py "$(Build.ArtifactStagingDirectory)/notebook/$(NotebookName)-$(Build.SourceVersion).py"
+    cp notebook-run.json.tmpl "$(Build.ArtifactStagingDirectory)/notebook/notebook-run.json.tmpl"
+  displayName: 'Prepare Notebook Build Artifacts'
+- task: PublishBuildArtifacts@1
+  displayName: Publish ARM Template Build Artifacts
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/arm_template'
+    artifactName: arm_template
+- task: PublishBuildArtifacts@1
+  displayName: Publish Notebook Build Artifacts
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/notebook'
+    artifactName: notebook
